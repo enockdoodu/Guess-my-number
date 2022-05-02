@@ -23,11 +23,11 @@ const Player = (Who) => ({
         console.log(`${Who} gave Random number ${randomNumber}`);
         return randomNumber;
     },
-    getGuess: () => {
-      const guess = Math.floor(Math.random()*10);
-      console.log(`${Who} played ${guess}`);
-      return guess;
-    },
+    getGuess: () => { // <-- async now
+        const guess = Math.floor(Math.random() * 10);
+        console.log(`${Who} played ${guess}`);
+        return guess;
+      },    
     seeOutcome: (outcome) => {
       console.log(`${Who} saw outcome ${OUTCOME[outcome]}`);
     },  
@@ -44,14 +44,7 @@ const Player = (Who) => ({
     ctcBob.p.Bob({
       ...Player('Bob'),
       acceptWager: async (amt) => { // <-- async now
-        if ( Math.random() <= 0.5 ) {
-          for ( let i = 0; i < 10; i++ ) {
-            console.log(`  Bob takes his sweet time...`);
-            await stdlib.wait(1);
-          }
-        } else {
-          console.log(`Bob accepts the wager of ${fmt(amt)}.`);
-        }
+        console.log(`Bob accepts the wager of ${fmt(amt)}.`);
       },
     }),
   ]);
