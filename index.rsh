@@ -1,4 +1,6 @@
 'reach 0.1';
+const [ isOutcome, B_WINS, DRAW, A_WINS ] = makeEnum(3);
+
 const winner = (price, guessAlice, guessBob) => {
     if(guessBob==guessAlice)
     {
@@ -47,15 +49,18 @@ export const main = Reach.App(() => {
   });
   Alice.publish(wager,randomAlice,deadline).pay(wager);;
   commit();
+
   Bob.only(() => {
     interact.acceptWager(wager);
     const randomBob = declassify(interact.getRandomNumber());
   });
   Bob.publish(randomBob).pay(wager).timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));
-  commit();
 
-  const price = (randomBob+randomAlice)/2
-  
+  const price = (randomBob+randomAlice)/2;
+  var outcome = DRAW;
+  invariant( balance() == 2 * wager && isOutcome(outcome) );
+  while ( outcome == DRAW ) {
+    commit();
   Alice.only(() => {
     const _guessAlice = interact.getGuess();
     const [_commitAlice, _saltAlice] = makeCommitment(interact, _guessAlice);
@@ -63,6 +68,7 @@ export const main = Reach.App(() => {
   });
   Alice.publish(commitAlice);
   commit();
+
   unknowable(Bob, Alice(_guessAlice, _saltAlice));
   Bob.only(() => {
     const guessBob = declassify(interact.getGuess());
@@ -75,7 +81,10 @@ export const main = Reach.App(() => {
   });
   Alice.publish(saltAlice, guessAlice).timeout(relativeTime(deadline), () => closeTo(Bob, informTimeout));;
   checkCommitment(commitAlice, saltAlice, guessAlice);
-  const outcome = winner(price, guessAlice, guessBob);
+  
+    outcome = winner(price, guessAlice, guessBob);
+  continue;
+}
   const            [forAlice, forBob] =
   outcome == 2 ? [       2,      0] :
   outcome == 0 ? [       0,      2] :
