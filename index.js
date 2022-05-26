@@ -43,6 +43,7 @@ class Player extends React.Component {
   random() { return reach.hasRandom.random(); }
   async getRandomNumber() { // Fun([], UInt)
     const randomNumber = Math.floor(Math.random() * 10);
+    console.log("randomNumber"+randomNumber);
     return randomNumber;
   }
   async getGuess() { // Fun([], UInt)
@@ -52,7 +53,10 @@ class Player extends React.Component {
     this.setState({ view: 'WaitingForResults', guess });
     return guess;
   }
-  seeOutcome(i) { this.setState({ view: 'Done', outcome: intToOutcome[i] }); }
+ 
+  seeOutcome(i,price) { 
+    this.setState({ view: 'Done', outcome: intToOutcome[i], price: ""+price }); 
+  }
   informTimeout() { this.setState({ view: 'Timeout' }); }
   playGuess(guess) { this.state.resolveGuessP(guess); }
 }
