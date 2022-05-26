@@ -22,7 +22,7 @@ const Player = {
     ...hasRandom,
     getRandomNumber:Fun([], UInt),
     getGuess: Fun([], UInt),
-    seeOutcome: Fun([UInt], Null),
+    seeOutcome: Fun([UInt,UInt], Null),
     informTimeout: Fun([], Null),
   };
   
@@ -59,6 +59,7 @@ export const main = Reach.App(() => {
   const price = (randomBob+randomAlice)/2;
   var outcome = DRAW;
   invariant( balance() == 2 * wager && isOutcome(outcome) );
+
   while ( outcome == DRAW ) {
     commit();
   Alice.only(() => {
@@ -81,8 +82,7 @@ export const main = Reach.App(() => {
   });
   Alice.publish(saltAlice, guessAlice).timeout(relativeTime(deadline), () => closeTo(Bob, informTimeout));;
   checkCommitment(commitAlice, saltAlice, guessAlice);
-  
-    outcome = winner(price, guessAlice, guessBob);
+  outcome = winner(price, guessAlice, guessBob);
   continue;
 }
   const            [forAlice, forBob] =
@@ -93,6 +93,6 @@ export const main = Reach.App(() => {
   transfer(forBob   * wager).to(Bob);
   commit();
   each([Alice, Bob], () => {
-    interact.seeOutcome(outcome);
+    interact.seeOutcome(outcome,price);
   });
 });
