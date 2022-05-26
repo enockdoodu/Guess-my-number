@@ -14,7 +14,7 @@ exports.GetGuess = class extends React.Component {
         <br />
         {!playable ? 'Please wait...' : ''}
         <br /> Guess a number between 0 and 10
-        <input type='number' min={0} max={10} value ={guess} onChange={(e)=>{this.setState({guess:e.target.value})}}/>
+        <input type='number' min={0} max={10} value ={this.state.guess} onChange={(e)=>{this.setState({guess:e.target.value})}}/>
           <button onClick={()=>parent.playGuess(this.state.guess)}>Submit Guess</button>
       </div>
     );
@@ -33,10 +33,14 @@ exports.WaitingForResults = class extends React.Component {
 
 exports.Done = class extends React.Component {
   render() {
-    const {outcome} = this.props;
+    const {outcome,price} = this.props;
     return (
       <div>
-        Thank you for playing. The outcome of this game was:
+        Thank you for playing.
+        <br></br>
+        The Price was : {price || 'Unknown'}
+        <br></br>
+        The outcome of this game was:
         <br />{outcome || 'Unknown'}
       </div>
     );
