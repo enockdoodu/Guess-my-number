@@ -15,5 +15,5 @@ Features :
 7. If one preson left, the timeout makes sure that other person gets the deplyoyed contact. 
 
 
-<b>How to start the App<.b>
+<b>How to start the App</b> </br>
 ./reach react
