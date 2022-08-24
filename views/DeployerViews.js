@@ -10,7 +10,7 @@ exports.Wrapper = class extends React.Component {
     const {content} = this.props;
     return (
       <div className="Deployer">
-        <h2>Deployer (Alice)</h2>
+        <h2>PlayerOne (Deployer)</h2>
         {content}
       </div>
     );
@@ -22,14 +22,19 @@ exports.SetWager = class extends React.Component {
     const {parent, defaultWager, standardUnit} = this.props;
     const wager = (this.state || {}).wager || defaultWager;
     return (
-      <div>
+      <div className='setWager-container'>
+        <div>
         <input
+        className='setWager-input'
           type='number'
           placeholder={defaultWager}
           onChange={(e) => this.setState({wager: e.currentTarget.value})}
         /> {standardUnit}
+        </div>
         <br />
+
         <button
+        className='setWager-btn'
           onClick={() => parent.setWager(wager)}
         >Set wager</button>
       </div>
@@ -41,10 +46,11 @@ exports.Deploy = class extends React.Component {
   render() {
     const {parent, wager, standardUnit} = this.props;
     return (
-      <div>
+      <div className='deploy-container'>
         Wager (pay to deploy): <strong>{wager}</strong> {standardUnit}
         <br />
         <button
+        className='deploy-btn'
           onClick={() => parent.deploy()}
         >Deploy</button>
       </div>
@@ -81,7 +87,7 @@ exports.WaitingForAttacher = class extends React.Component {
         <pre className='ContractInfo'>
           {ctcInfoStr}
         </pre>
-        <button
+        <button className='clipboard-btn'
           onClick={(e) => this.copyToClipboard(e.currentTarget)}
         >Copy to clipboard</button>
       </div>

@@ -8,7 +8,7 @@ exports.Wrapper = class extends React.Component {
     const {content} = this.props;
     return (
       <div className="Attacher">
-        <h2>Attacher (Bob)</h2>
+        <h2>PlayerTwo (Attacher)</h2>
         {content}
       </div>
     );
@@ -29,7 +29,7 @@ exports.Attach = class extends React.Component {
           placeholder='{}'
         />
         <br />
-        <button
+        <button className='attach-btn'
           disabled={!ctcInfoStr}
           onClick={() => parent.attach(ctcInfoStr)}
         >Attach</button>
@@ -53,11 +53,11 @@ exports.AcceptTerms = class extends React.Component {
     const {wager, standardUnit, parent} = this.props;
     const {disabled} = this.state || {};
     return (
-      <div>
+      <div className='wager-container'>
         The terms of the game are:
         <br /> Wager: {wager} {standardUnit}
         <br />
-        <button
+        <button className='accept-btn'
           disabled={disabled}
           onClick={() => {
             this.setState({disabled: true});

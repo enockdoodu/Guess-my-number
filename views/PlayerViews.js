@@ -2,20 +2,23 @@ import React from 'react';
 
 const exports = {};
 
-// Player views must be extended.
-// It does not have its own Wrapper view.
+
 exports.GetGuess = class extends React.Component {
   state={guess:0}
   render() {
     const {parent, playable, guess} = this.props;
     return (
       <div>
-        {guess ? 'It was a draw! Pick again.' : ''}
+        {guess ? 'It was a draw🤷‍♂️ Pick again.' : ''}
         <br />
         {!playable ? 'Please wait...' : ''}
+        <div className='players'>
+          
         <br /> Guess a number between 0 and 10
-        <input type='number' min={0} max={10} value ={this.state.guess} onChange={(e)=>{this.setState({guess:e.target.value})}}/>
-          <button onClick={()=>parent.playGuess(this.state.guess)}>Submit Guess</button>
+        <input className='input' type='number' min={0} max={10} value ={this.state.guess} onChange={(e)=>{this.setState({guess:e.target.value})}}/>
+        
+          <button className='submit-btn' onClick={()=>parent.playGuess(this.state.guess)}>Submit Guess</button>
+      </div>
       </div>
     );
   }
@@ -36,11 +39,11 @@ exports.Done = class extends React.Component {
     const {outcome,price} = this.props;
     return (
       <div>
-        Thank you for playing.
+        🎈🎈🎈🎈
         <br></br>
         The Price was : {price || 'Unknown'}
         <br></br>
-        The outcome of this game was:
+        The result of the game is:
         <br />{outcome || 'Unknown'}
       </div>
     );

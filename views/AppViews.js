@@ -7,11 +7,15 @@ exports.Wrapper = class extends React.Component {
     const {content} = this.props;
     return (
       <div className="App">
+        
         <header className="App-header" id="root">
-          <h1>Guess the Price!!!</h1>
+        
+          <h1>The Price Is Right💃🕺</h1>
           {content}
+          
         </header>
       </div>
+      
     );
   }
 }
@@ -62,12 +66,14 @@ exports.DeployerOrAttacher = class extends React.Component {
         <br />
         <p>
           <button
+          className='role-btn'
             onClick={() => parent.selectDeployer()}
           >Deployer</button>
           <br /> Set the wager, deploy the contract.
         </p>
         <p>
           <button
+          className='role-btn'
             onClick={() => parent.selectAttacher()}
           >Attacher</button>
           <br /> Attach to the Deployer's contract.

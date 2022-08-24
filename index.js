@@ -7,9 +7,9 @@ import './index.css';
 import * as backend from './build/index.main.mjs';
 import { loadStdlib,ALGO_MyAlgoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
 const reach = loadStdlib(process.env);
-const intToOutcome = ['Bob wins!', 'Draw!', 'Alice wins!'];
+const intToOutcome = ['PlayerTwo wins🥳🥳', 'Draw🤷‍♂️', 'PlayerOne wins🥳🥳'];
 const { standardUnit } = reach;
-const defaults = { defaultFundAmt: '10', defaultWager: '3', standardUnit };
+const defaults = { defaultFundAmt: '10', defaultWager: '2', standardUnit };
 
 class App extends React.Component {
   constructor(props) {
@@ -41,12 +41,12 @@ class App extends React.Component {
 
 class Player extends React.Component {
   random() { return reach.hasRandom.random(); }
-  async getRandomNumber() { // Fun([], UInt)
+  async getRandomNumber() { 
     const randomNumber = Math.floor(Math.random() * 10);
     console.log("randomNumber"+randomNumber);
     return randomNumber;
   }
-  async getGuess() { // Fun([], UInt)
+  async getGuess() { 
     const guess = await new Promise(resolveGuessP => {
       this.setState({ view: 'GetGuess', playable: true, resolveGuessP });
     });
@@ -70,9 +70,9 @@ class Deployer extends Player {
   async deploy() {
     const ctc = this.props.acc.contract(backend);
     this.setState({ view: 'Deploying', ctc });
-    this.wager = reach.parseCurrency(this.state.wager); // UInt
-    this.deadline = { ETH: 10, ALGO: 100, CFX: 1000 }[reach.connector]; // UInt
-    backend.Alice(ctc, this);
+    this.wager = reach.parseCurrency(this.state.wager); 
+    this.deadline = { ETH: 10, ALGO: 100, CFX: 1000 }[reach.connector]; 
+    backend.PlayerOne(ctc, this);
     const ctcInfoStr = JSON.stringify(await ctc.getInfo(), null, 2);
     this.setState({ view: 'WaitingForAttacher', ctcInfoStr });
   }
@@ -86,9 +86,9 @@ class Attacher extends Player {
   attach(ctcInfoStr) {
     const ctc = this.props.acc.contract(backend, JSON.parse(ctcInfoStr));
     this.setState({ view: 'Attaching' });
-    backend.Bob(ctc, this);
+    backend.PlayerTwo(ctc, this);
   }
-  async acceptWager(wagerAtomic) { // Fun([UInt], Null)
+  async acceptWager(wagerAtomic) { 
     const wager = reach.formatCurrency(wagerAtomic, 4);
     return await new Promise(resolveAcceptedP => {
       this.setState({ view: 'AcceptTerms', wager, resolveAcceptedP });

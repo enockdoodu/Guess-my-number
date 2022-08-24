@@ -1,16 +1,16 @@
 'reach 0.1';
-const [ isOutcome, B_WINS, DRAW, A_WINS ] = makeEnum(3);
+const [ isOutcome, pOne_Win, DRAW, pTwo_Win] = makeEnum(3);
 
-const winner = (price, guessAlice, guessBob) => {
-    if(guessBob==guessAlice)
+const winner = (price, guessPlayerOne, guessPlayerTwo) => {
+    if(guessPlayerTwo==guessPlayerOne)
     {
         return 1;
     }
-    else if (guessBob == price) 
+    else if (guessPlayerTwo == price) 
     {
          return 0;
     }
-    else if(guessAlice == price)
+    else if(guessPlayerOne == price)
     {
          return 2;
     }
@@ -27,72 +27,72 @@ const Player = {
   };
   
 export const main = Reach.App(() => {
-  const Alice = Participant('Alice', {
+  const PlayerOne = Participant('PlayerOne', {
     ...Player,
     wager: UInt,
     deadline: UInt, 
   });
-  const Bob   = Participant('Bob', {
+  const PlayerTwo   = Participant('PlayerTwo', {
     ...Player,
     acceptWager: Fun([UInt], Null),
   });
   init();
   const informTimeout = () => {
-    each([Alice, Bob], () => {
+    each([PlayerOne, PlayerTwo], () => {
       interact.informTimeout();
     });
   };
-  Alice.only(() => {
+  PlayerOne.only(() => {
     const wager = declassify(interact.wager);
-    const randomAlice = declassify(interact.getRandomNumber());
+    const randomPlayerOne = declassify(interact.getRandomNumber());
     const deadline = declassify(interact.deadline);
   });
-  Alice.publish(wager,randomAlice,deadline).pay(wager);;
+  PlayerOne.publish(wager,randomPlayerOne,deadline).pay(wager);;
   commit();
 
-  Bob.only(() => {
+  PlayerTwo.only(() => {
     interact.acceptWager(wager);
-    const randomBob = declassify(interact.getRandomNumber());
+    const randomPlayerTwo = declassify(interact.getRandomNumber());
   });
-  Bob.publish(randomBob).pay(wager).timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));
+  PlayerTwo.publish(randomPlayerTwo).pay(wager).timeout(relativeTime(deadline), () => closeTo(PlayerOne, informTimeout));
 
-  const price = (randomBob+randomAlice)/2;
+  const price = (randomPlayerTwo+randomPlayerOne)/2;
   var outcome = DRAW;
   invariant( balance() == 2 * wager && isOutcome(outcome) );
 
   while ( outcome == DRAW ) {
     commit();
-  Alice.only(() => {
-    const _guessAlice = interact.getGuess();
-    const [_commitAlice, _saltAlice] = makeCommitment(interact, _guessAlice);
-    const commitAlice = declassify(_commitAlice);
+  PlayerOne.only(() => {
+    const _guessPlayerOne = interact.getGuess();
+    const [_commitPlayerOne, _saltPlayerOne] = makeCommitment(interact, _guessPlayerOne);
+    const commitPlayerOne = declassify(_commitPlayerOne);
   });
-  Alice.publish(commitAlice);
+  PlayerOne.publish(commitPlayerOne);
   commit();
 
-  unknowable(Bob, Alice(_guessAlice, _saltAlice));
-  Bob.only(() => {
-    const guessBob = declassify(interact.getGuess());
+  unknowable(PlayerTwo, PlayerOne(_guessPlayerOne, _saltPlayerOne));
+  PlayerTwo.only(() => {
+    const guessPlayerTwo = declassify(interact.getGuess());
   });
-  Bob.publish(guessBob).timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));
+  PlayerTwo.publish(guessPlayerTwo).timeout(relativeTime(deadline), () => closeTo(PlayerOne, informTimeout));
   commit();
-  Alice.only(() => {
-    const saltAlice = declassify(_saltAlice);
-    const guessAlice = declassify(_guessAlice);
+  PlayerOne.only(() => {
+    const pPlayerOne = declassify(_saltPlayerOne);
+    const guessPlayerOne = declassify(_guessPlayerOne);
   });
-  Alice.publish(saltAlice, guessAlice).timeout(relativeTime(deadline), () => closeTo(Bob, informTimeout));;
-  checkCommitment(commitAlice, saltAlice, guessAlice);
-  outcome = winner(price, guessAlice, guessBob);
+  PlayerOne.publish(pPlayerOne, guessPlayerOne).timeout(relativeTime(deadline), () => closeTo(PlayerTwo, informTimeout));;
+  checkCommitment(commitPlayerOne, pPlayerOne, guessPlayerOne);
+  outcome = winner(price, guessPlayerOne, guessPlayerTwo);
   continue;
 }
-  const            [forAlice, forBob] =
+  const            [forPlayerOne, forPlayerTwo] =
   outcome == 2 ? [       2,      0] :
   outcome == 0 ? [       0,      2] :
-  /* tie      */ [       1,      1];
-  transfer(forAlice * wager).to(Alice);
-  transfer(forBob   * wager).to(Bob);
+  [       1,      1];
+  transfer(forPlayerOne * wager).to(PlayerOne);
+  transfer(forPlayerTwo   * wager).to(PlayerTwo);
   commit();
-  each([Alice, Bob], () => {
+  each([PlayerOne, PlayerTwo], () => {
     interact.seeOutcome(outcome,price);
   });
 });

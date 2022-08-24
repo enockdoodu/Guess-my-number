@@ -16,7 +16,7 @@ body {
   }
   
   .App-header {
-    background-color: #021336;
+    background-color: #115a1b;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -26,14 +26,128 @@ body {
     color: white;
   }
   
+  .role-btn{
+    width: 150px;
+    height: 50px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: rgb(72, 235, 159);
+  }
+  .role-btn:hover{
+    background-color: rgb(17, 133, 79);
+  }
+  .attach-btn{
+    width: 150px;
+    height: 50px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: rgb(72, 235, 159);
+  }
+  .attach-btn:hover{
+    background-color: rgb(17, 133, 79);
+  }
+  .accept-btn{
+    width: 400px;
+    height: 50px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: rgb(72, 235, 159);
+  }
+  .accept-btn:hover{
+    background-color: rgb(17, 133, 79);
+  }
+  .submit-btn{
+    width: 200px;
+    height: 50px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    background-color: rgb(72, 235, 159); 
+  }
+  .submit-btn:hover{
+    background-color: rgb(17, 133, 79);
+  }
+  .setWager-btn{
+    width: 150px;
+    height: 50px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: rgb(72, 235, 159);
+    
+  }
+  .setWager-btn:hover{
+    background-color: rgb(17, 133, 79);
+  }
+  .setWager-input{
+    border-radius: 5px;
+    width: 100px;
+    font-size: 30px;
+    border: none;
+    
+    height: 50px;
+  }
+  .deploy-btn{
+    width: 150px;
+    height: 50px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-top: 15px;
+    background-color: rgb(72, 235, 159);
+  }
+  .deploy-btn:hover{
+    background-color: rgb(17, 133, 79);
+  }
+  .clipboard-btn{
+    width: 200px;
+    height: 75px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: rgb(72, 235, 159);
+  }
+  .clipboard-btn:hover{
+    background-color: rgb(17, 133, 79);
+  }
+  .input{
+    border-radius: 5px;
+    width: 100px;
+    font-size: 30px;
+    border: none;
+    margin-top: 20px;
+    height: 50px;
+  }
+  .setWager-container,
+  .wager-container{
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    flex-direction: column;
+  }
+  
+
+  
   .App-link {
     color: #61dafb;
   }
+  .players{
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    flex-direction: column;
+   
+  }
   
-  input[type=number] {
+  /* input[type=number] {
     font-size: calc(10px + 2vmin);
     width: 4em;
-  }
+  } */
   
   button {
     font-size: calc(10px + 2vmin);
