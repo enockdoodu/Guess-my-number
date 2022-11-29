@@ -10,7 +10,7 @@ exports.Wrapper = class extends React.Component {
     const {content} = this.props;
     return (
       <div className="Deployer">
-        <h2>PlayerOne (Deployer)</h2>
+        <h2>First Player (Deployer)</h2>
         {content}
       </div>
     );
@@ -20,7 +20,7 @@ exports.Wrapper = class extends React.Component {
 exports.SetWager = class extends React.Component {
   render() {
     const {parent, defaultWager, standardUnit} = this.props;
-    const wager = (this.state || {}).wager || defaultWager;
+    const amount = (this.state || {}).amount || defaultWager;
     return (
       <div className='setWager-container'>
         <div>
@@ -28,14 +28,14 @@ exports.SetWager = class extends React.Component {
         className='setWager-input'
           type='number'
           placeholder={defaultWager}
-          onChange={(e) => this.setState({wager: e.currentTarget.value})}
+          onChange={(e) => this.setState({amount: e.currentTarget.value})}
         /> {standardUnit}
         </div>
         <br />
 
         <button
         className='setWager-btn'
-          onClick={() => parent.setWager(wager)}
+          onClick={() => parent.setWager(amount)}
         >Set wager</button>
       </div>
     );
@@ -44,10 +44,10 @@ exports.SetWager = class extends React.Component {
 
 exports.Deploy = class extends React.Component {
   render() {
-    const {parent, wager, standardUnit} = this.props;
+    const {parent, amount, standardUnit} = this.props;
     return (
       <div className='deploy-container'>
-        Wager (pay to deploy): <strong>{wager}</strong> {standardUnit}
+        Wager (pay to deploy): <strong>{amount}</strong> {standardUnit}
         <br />
         <button
         className='deploy-btn'
